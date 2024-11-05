@@ -152,7 +152,7 @@ class vista:
                 self.turno+=1
                 self.turno%=2
                 self.labels[sel[0]][sel[1]]=grf.etiquetado(sel[0], sel[1], self.ventana, self.Seleccionar)
-                grf.asignarImagen( ub, self.labels, l )
+                grf.asignarImagen( mat.ubicar(self.labels, ub), mat.ubicar(self.imagos, l), l )
                 self.Pruebas(ub)
                 self.blanquear(l, ub)
                 print("----------------------------------------------------------------")
