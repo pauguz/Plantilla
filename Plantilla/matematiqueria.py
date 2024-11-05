@@ -12,6 +12,28 @@ def coordenarEnlistado(unidad:int, *args ):
     return lis
 
 @staticmethod
+def listador(dim:int):
+    lisB=[]
+    lisN=[]
+    media=dim//2
+    medium=(dim**2)//2
+    #Llenar con Fichas negras
+    for i in range(media-2, media+3):
+        k=i*dim
+        lisN.extend(coordenarEnlistado(dim, i, medium*2-i, k, medium*2-k))
+    lisN.extend(coordenarEnlistado(dim, dim+media, 2*medium-media*3-1, (media)*dim+1, (media+1)*dim-2) )
+    lisN={1:lisN}
+
+    #Llenar con Fichas blancas  
+    for i in range(-2,3):
+        j=2-abs(i)
+        for k in range (medium+i*dim-j,medium+i*dim+j+1):
+            lisB.append(coordenar(k, dim))
+    r=lisB.pop(6)
+    lisB={1:lisB, 0:[r]}
+    return [lisN, lisB]
+
+@staticmethod
 def ubicar(labels, dup:tuple):
     return labels[dup[0]][dup[1]]
 
@@ -54,10 +76,12 @@ def Mover(inicio, destino, func):
         print(inicio)
         return True
 
+
+
 @staticmethod
 def MovimientosPosibles(inicio, func):
-    movimientosPosibles = []
     d=direccionales[0] + direccionales[1]
+    movimientosPosibles = []
     for direccion in d:
         puedoAgregar = True
         i = 1  # Para ir avanzando en la dirección

@@ -30,6 +30,7 @@ class vista:
         self.j = jue
         self.imagos= [{clave: Image.open(ruta) for clave, ruta in dic.items()} for dic in imgs]
         ventor(self.ventana)
+        self.n=self.j.coors.__len__
         self.Inicio()
         self.llenar()
     
@@ -82,7 +83,43 @@ class vista:
             for j in i:
                 j.unbind("<Button-1>")
         grf.fin(st)
+    
+    def Selegir(self, u:tuple):
+        self.seleccion=u
+        self.movimientos_graficados = mat.MovimientosPosibles(u, self.obtenerContNum)
+        movimientos = self.movimientos_graficados
+        grf.graficarMovimientosPosibles(self.labels, movimientos)
 
+    def Mover(self, sel, destino):
+            l=self.obtenerContNum(sel)
+            ub=self.ObtenerUbicación(destino)
+            print("Destino: ", end=" ")
+            print(ub)
+            grf.restaurarMovimientos(self.labels, self.movimientos_graficados)
+            #comprobar si el movimiento es posible
+            if(ub in self.movimientos_graficados):      
+                self.turno+=1
+                self.turno%=self.n
+                #Parte Mejorable//Vaciar label
+                self.labels[sel[0]][sel[1]]=grf.etiquetado(sel[0], sel[1], self.ventana, self.Seleccionar)
+                grf.asignarImagen(self.j, ub, self.labels, *l )
+                self.Pruebas(ub)
+                self.blanquear(l, ub)
+                print("----------------------------------------------------------------")
+            self.seleccion=None
+
+
+    def funcionar(self ):
+        def func(event:tk.Event):
+            l=obtener_Contenido(event.widget)
+            sel=self.seleccion
+            if sel:
+                self.Mover(sel, event.widget)
+            elif(l[0]==self.turno):
+                self.Selegir(self.ObtenerUbicación(event.widget))
+            
+
+                           
 
     def Seleccionar(self, event:tk.Event):
         #sel es None cuando se hace el primer clic y es una tupla cuando se hace el segundo
@@ -93,6 +130,10 @@ class vista:
         if (boola and not boolb):
             if (self.turno==l[0]):
                 self.seleccion=self.ObtenerUbicación(event.widget) 
+                print("Contenido:", end=" ")
+                print(l)
+                print("Inicio: ", end=" ")
+                print(self.seleccion)
                 self.movimientos_graficados = mat.MovimientosPosibles(self.seleccion, self.obtenerContNum)
                 movimientos = self.movimientos_graficados
                 grf.graficarMovimientosPosibles(self.labels, movimientos)
@@ -102,17 +143,11 @@ class vista:
             l=self.obtenerContNum(sel)
             destino=event.widget
             ub=self.ObtenerUbicación(destino)
-        #datos para el registro
-            print("Inicio: ", end=" ")
-            print(self.seleccion)
-            print("Contenido:", end=" ")
-            print(l)
             print("Destino: ", end=" ")
             print(ub)
             grf.restaurarMovimientos(self.labels, self.movimientos_graficados)
         #comprobar si el movimiento es posible
             if(ub in self.movimientos_graficados):      
-
             #Parte Mejorable//Vaciar label
                 self.turno+=1
                 self.turno%=2
