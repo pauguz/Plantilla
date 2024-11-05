@@ -1,8 +1,8 @@
 import tkinter as tk
-from Juego import juego
 import grafiqueria as grf
 import matematiqueria as mat
-from tkinter import Image
+from PIL import Image
+from Juego import juego
 #array letras
 letras=list(['a','b','c','d','e','f','g','h','i','j','k'])
 
@@ -44,13 +44,13 @@ class vista:
     def llenar(self):
         self.nuncio=tk.Label(self.ventana, width=8, height=2, borderwidth=1, relief="solid")
         re = tk.Label(self.ventana, text=" RETVRN ", borderwidth=1, relief="solid")
-        re.place(x=self.j.dim*37.5, y=60)
+        re.place(x=self.j.dim[1]*37.5, y=60)
         re.bind("<Button-1>", self.Inicio )
-        self.nuncio.place(x=self.j.dim*37.5, y=6)
+        self.nuncio.place(x=self.j.dim[1]*37.5, y=6)
     
     def validar(self, dup):
         d=self.j.dim
-        return dup[0]>=0 and dup[0]<d and dup[1]>=0 and dup[1]<d    
+        return dup[0]>=0 and dup[0]<d[0] and dup[1]>=0 and dup[1]<d[1]    
     
     def obtenerContNum(self, dup:tuple):
         if(self.validar(dup)):
@@ -102,7 +102,7 @@ class vista:
                 self.turno%=self.n
                 #Parte Mejorable//Vaciar label
                 self.labels[sel[0]][sel[1]]=grf.etiquetado(sel[0], sel[1], self.ventana, self.Seleccionar)
-                grf.asignarImagen(self.j, ub, self.labels, *l )
+                grf.asignarImagen(ub, self.labels, l )
                 self.Pruebas(ub)
                 self.blanquear(l, ub)
                 print("----------------------------------------------------------------")
@@ -152,7 +152,7 @@ class vista:
                 self.turno+=1
                 self.turno%=2
                 self.labels[sel[0]][sel[1]]=grf.etiquetado(sel[0], sel[1], self.ventana, self.Seleccionar)
-                grf.asignarImagen(self.j, ub, self.labels, *l )
+                grf.asignarImagen( ub, self.labels, l )
                 self.Pruebas(ub)
                 self.blanquear(l, ub)
                 print("----------------------------------------------------------------")
@@ -162,7 +162,7 @@ class vista:
     #Funciones Vikingas
     def blanquear(self, lis, destino):
         #Codigo por si gana el blanco
-        comp=[self.j.dim-1, 0]
+        comp=[self.j.dim[0]-1, 0]
         if(lis==[1, 0] and destino[0] in comp and destino[1] in comp):
             self.Terminar('BLANCAS')
 

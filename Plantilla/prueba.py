@@ -15,7 +15,8 @@ rey=ficha(mat.MovimientosPosibles)
 #Disposicion
 dispin=mat.listador(11)
 j=juego(coors=dispin,fichas=[rey, soldado], v=11)
-v=vista(j, turn=0)
+imgs=[ {1:'vikingonegro.png'} , {0:'reg.png', 1:'vikingoblanco.png'} ]
+v=vista(j, imgs=imgs)
 v.ventana.mainloop()
 
 #v=tk.Tk()

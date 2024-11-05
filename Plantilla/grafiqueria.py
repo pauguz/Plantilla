@@ -29,7 +29,7 @@ def graficarFicha(labels, img, lis, t):
 def graficar(ju:juego, labels, imagos):
     for i in range(len(imagos)):
         for j in imagos[i].keys():
-            graficarFicha(labels, imagos[i][j], ju.coors[i][j], str(i+' '+j) )
+            graficarFicha(labels, imagos[i][j], ju.coors[i][j], str(i)+' '+str(j) )
             
 #Cambiar el color 
 def recolorear(imago, col):
