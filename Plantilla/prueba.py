@@ -1,10 +1,10 @@
 from Interfaz import ventor, vista
 from Ficha import ficha
-#from Ficha import ficha
 from Juego import juego
 import tkinter as tk
 import grafiqueria as grf
 import matematiqueria as mat
+
 #Creando fichas 
 #dama=ficha(mt.diagonal, 'circulo.png')
 
@@ -34,9 +34,9 @@ def pruebagreca(d=8):
     hoplita=ficha(mat.MovimientosPosibles)
     dispin=mat.grecolista(d)
     j=juego(coors=dispin, fichas=[hoplita], v=8, h=d )
-    imgs=[ {1:'vikingonegro.png'} , {1:'vikingoblanco.png'} ]
+    imgs=[ {1:'zorrovacio.png'} , {1:'vikingoblanco.png'} ]
     v=vista(j, imgs=imgs)
     v.ventana.mainloop()
 
-pruebavikinga()
+pruebagreca()
 

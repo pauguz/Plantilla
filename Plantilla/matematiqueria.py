@@ -117,16 +117,13 @@ def MovimientosRectos(d, inicio, func):
     return movs
 
 @staticmethod
-def Movimientos(inicio, func, d):
+def MovimientosPosibles(inicio, func, d=None):
+    if(not d):
+        d=direccionales[0]+direccionales[1]
     movimientosPosibles = []
     for direccion in d:
         movimientosPosibles.extend(MovimientosRectos(direccion, inicio, func))
     return movimientosPosibles
-
-@staticmethod
-def MovimientosPosibles(inicio, func):
-    d=direccionales[0] + direccionales[1]
-    return Movimientos(inicio, func, d)
 
 @staticmethod
 def Dimendor(d):
