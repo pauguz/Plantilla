@@ -6,7 +6,7 @@ class juego:
     def __init__(self, fichas:list[ficha], coors:list, v, h=None ):
         if not h:
             h=v
-        self.dim=(h,v)
+        self.dim=(v,h)
         self.fichero=fichas
         self.coors=coors
     

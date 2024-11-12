@@ -6,8 +6,6 @@ from Juego import juego
 #array letras
 letras=list(['a','b','c','d','e','f','g','h','i','j','k'])
 
-def obtener_Contenido(lab: tk.Label):
-    return list(map (int, lab.cget("text").split()))
 
 def ventor(v, txt='Mi ventana'):
  # Configurar el título de la ventana
@@ -54,15 +52,23 @@ class vista:
     
     def obtenerContNum(self, dup:tuple):
         if(self.validar(dup)):
-            return obtener_Contenido(mat.ubicar(self.labels, dup))
+            return mat.obtener_Contenido(mat.ubicar(self.labels, dup))
         return [None]
+    
+    def Comparar(self, dup, b):
+        d=self.obtenerContNum(dup)
+        if(d):
+            d=d[0]
+            if(d):
+                return d==b
+        return d
         
     #Devuelve verdadero si y solo si las dos duplas son coordenadas de casillas con fichas de distinto color o si hay una ficha y una direccion invalida
     def Discriminante(self, dup1, dup2):
         a=self.obtenerContNum(dup1)
         if(not self.validar(dup2)):
             return True
-        b=obtener_Contenido(mat.ubicar(self.labels, dup2))
+        b=self.obtenerContNum(dup2)
         if b and a:
             return not a[0]==b[0]
         else: return False
@@ -84,6 +90,7 @@ class vista:
                 j.unbind("<Button-1>")
         grf.fin(st)
     
+
     def Selegir(self, u:tuple):
         self.seleccion=u
         self.movimientos_graficados = mat.MovimientosPosibles(u, self.obtenerContNum)
@@ -111,10 +118,12 @@ class vista:
 
     def funcionar(self ):
         def func(event:tk.Event):
-            l=obtener_Contenido(event.widget)
+            l=mat.obtener_Contenido(event.widget)
             sel=self.seleccion
+            #Si ya hay una seleccion
             if sel:
                 self.Mover(sel, event.widget)
+            #Si aun no hay seleccion
             elif(l[0]==self.turno):
                 self.Selegir(self.ObtenerUbicación(event.widget))
             
@@ -124,7 +133,7 @@ class vista:
     def Seleccionar(self, event:tk.Event):
         #sel es None cuando se hace el primer clic y es una tupla cuando se hace el segundo
         sel=self.seleccion
-        l=obtener_Contenido(event.widget)
+        l=mat.obtener_Contenido(event.widget)
         boola=(sel==None)
         boolb=(l==[])
         if (boola and not boolb):
@@ -143,12 +152,12 @@ class vista:
             l=self.obtenerContNum(sel)
             destino=event.widget
             ub=self.ObtenerUbicación(destino)
-            print("Destino: ", end=" ")
-            print(ub)
             grf.restaurarMovimientos(self.labels, self.movimientos_graficados)
         #comprobar si el movimiento es posible
             if(ub in self.movimientos_graficados):      
             #Parte Mejorable//Vaciar label
+                print("Destino: ", end=" ")
+                print(ub)
                 self.turno+=1
                 self.turno%=2
                 self.labels[sel[0]][sel[1]]=grf.etiquetado(sel[0], sel[1], self.ventana, self.Seleccionar)

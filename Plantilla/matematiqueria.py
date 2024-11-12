@@ -1,4 +1,7 @@
+import tkinter as tk
+
 direccionales=[[(1,0), (-1,0)], [(0,1), (0,-1)]]
+
 
 @staticmethod
 def coordenar(numero:int, unidad:int):
@@ -12,7 +15,7 @@ def coordenarEnlistado(unidad:int, *args ):
     return lis
 
 @staticmethod
-def listador(dim:int):
+def vikilista(dim:int):
     lisB=[]
     lisN=[]
     media=dim//2
@@ -23,7 +26,6 @@ def listador(dim:int):
         lisN.extend(coordenarEnlistado(dim, i, medium*2-i, k, medium*2-k))
     lisN.extend(coordenarEnlistado(dim, dim+media, 2*medium-media*3-1, (media)*dim+1, (media+1)*dim-2) )
     lisN={1:lisN}
-
     #Llenar con Fichas blancas  
     for i in range(-2,3):
         j=2-abs(i)
@@ -33,9 +35,23 @@ def listador(dim:int):
     lisB={1:lisB, 0:[r]}
     return [lisN, lisB]
 
+def grecolista(d):
+    lisB=[]
+    lisN=[]
+    for i in range(d):
+        lisN.append((0, i) )
+        lisB.append((7,i))
+    lisB={1:lisB}
+    lisN={1:lisN}
+    return [lisN, lisB]
+
 @staticmethod
 def ubicar(labels, dup:tuple):
     return labels[dup[0]][dup[1]]
+
+@staticmethod
+def obtener_Contenido(lab: tk.Label):
+    return list(map (int, lab.cget("text").split()))
 
 @staticmethod
 def SumaDupla(dup1:tuple, dup2:tuple):
@@ -76,23 +92,36 @@ def Mover(inicio, destino, func):
         print(inicio)
         return True
 
+def Extraer(labels:list, m):
+    struct=m
+    for i in range(labels.__len__):
+        for j in range(len(i)):
+            t=obtener_Contenido(labels[i][j])
+            if t :
+                labels[t[0]][t[1]]=(i,j)
+    return struct
 
+@staticmethod
+def MovimientosRectos(d, inicio, func):
+    movs=[]
+    puedoAgregar = True
+    i = 1  # Para ir avanzando en la dirección
+    while puedoAgregar:
+            # Calcular el nuevo fin sumando la dirección multiplicada por la iteración
+        fin = SumaDupla(inicio, MultDupla(d, i))
+            # Verificar si se puede mover al nuevo fin
+        puedoAgregar = not func(fin)
+        if puedoAgregar:
+            movs.append(fin)  # Agregar el movimiento posible
+        i += 1  # Aumentar la distancia en esa dirección
+    return movs
 
 @staticmethod
 def MovimientosPosibles(inicio, func):
     d=direccionales[0] + direccionales[1]
     movimientosPosibles = []
     for direccion in d:
-        puedoAgregar = True
-        i = 1  # Para ir avanzando en la dirección
-        while puedoAgregar:
-            # Calcular el nuevo fin sumando la dirección multiplicada por la iteración
-            fin = SumaDupla(inicio, MultDupla(direccion, i))
-            # Verificar si se puede mover al nuevo fin
-            puedoAgregar = not func(fin)
-            if puedoAgregar:
-                movimientosPosibles.append(fin)  # Agregar el movimiento posible
-            i += 1  # Aumentar la distancia en esa dirección
+        movimientosPosibles.extend(MovimientosRectos(direccion, inicio, func))
     return movimientosPosibles
 
 @staticmethod
