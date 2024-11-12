@@ -8,13 +8,13 @@ import matematiqueria as mat
 #Creando fichas 
 #dama=ficha(mt.diagonal, 'circulo.png')
 
-def pruebavikinga():
+def pruebavikinga(d=11):
 #Creando fichas
     soldado=ficha(mat.MovimientosPosibles)
     rey=ficha(mat.MovimientosPosibles)
     #Disposicion
-    dispin=mat.vikilista(11)
-    j=juego(coors=dispin,fichas=[rey, soldado], v=11)
+    dispin=mat.vikilista(d)
+    j=juego(coors=dispin,fichas=[rey, soldado], v=d)
     imgs=[ {1:'vikingonegro.png'} , {0:'reg.png', 1:'vikingoblanco.png'} ]
     v=vista(j, imgs=imgs)
     v.ventana.mainloop()
@@ -30,7 +30,7 @@ def pruebainca():
             c.destroy()
     v.mainloop()
 
-def pruebagreca(d):
+def pruebagreca(d=8):
     hoplita=ficha(mat.MovimientosPosibles)
     dispin=mat.grecolista(d)
     j=juego(coors=dispin, fichas=[hoplita], v=8, h=d )
@@ -38,5 +38,5 @@ def pruebagreca(d):
     v=vista(j, imgs=imgs)
     v.ventana.mainloop()
 
-pruebagreca(10)
+pruebavikinga()
 
