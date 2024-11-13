@@ -1,9 +1,10 @@
-from Interfaz import ventor, vista
+from Interfaz import vista
 from Ficha import ficha
 from Juego import juego
 import tkinter as tk
 import grafiqueria as grf
 import matematiqueria as mat
+import logiqueria as log
 
 #Creando fichas 
 #dama=ficha(mt.diagonal, 'circulo.png')
@@ -21,7 +22,7 @@ def pruebavikinga(d=11):
 
 def pruebainca():
     v=tk.Tk()
-    ventor(v)
+    grf.ventor(v, 'Taptana')
     grf.etiquetados(v, None, (7,5))
     k=v.winfo_children()
     for c in k:
@@ -31,12 +32,19 @@ def pruebainca():
     v.mainloop()
 
 def pruebagreca(d=8):
-    hoplita=ficha(mat.MovimientosPosibles)
+    dir=[(1,1),(-1,-1),(-1,1),(1,-1)]
+    m=log.expansion(dir)
+    hoplita=ficha(m)
     dispin=mat.grecolista(d)
     j=juego(coors=dispin, fichas=[hoplita], v=8, h=d )
-    imgs=[ {1:'zorrovacio.png'} , {1:'vikingoblanco.png'} ]
+    imgs=[ {0:'zorrovacio.png'} , {0:'vikingoblanco.png'} ]
     v=vista(j, imgs=imgs)
     v.ventana.mainloop()
 
-pruebagreca()
+def generador():
+    dir=[(1,1),(-1,-1),(-1,1),(1,-1)]
+    m=log.expansion(d=dir)
+    print(m)
+    del m
 
+pruebavikinga()

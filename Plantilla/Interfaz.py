@@ -6,18 +6,6 @@ from Juego import juego
 #array letras
 letras=list(['a','b','c','d','e','f','g','h','i','j','k'])
 
-
-def ventor(v, txt='Mi ventana'):
- # Configurar el título de la ventana
-    v.title(txt)
-# Configurar las dimensiones de la ventana
-    v.geometry("800x600")
-# Configurar el tamaño mínimo y máximo de la ventana para evitar deformación
-    v.minsize(800, 600)
-    v.maxsize(1200, 900) 
-    v.resizable(True, True)
-    v.config(bg="beige")
-
 class vista:
     seleccion=None  
     movimientos_graficados = []    
@@ -27,17 +15,15 @@ class vista:
         self.ventana = tk.Toplevel()
         self.j = jue
         self.imagos= [{clave: Image.open(ruta) for clave, ruta in dic.items()} for dic in imgs]
-        ventor(self.ventana)
+        grf.ventor(self.ventana)
         self.n=self.j.coors.__len__
         self.Inicio()
         self.llenar()
     
-    
-    def Inicio(self, event=None, t=1):
+    def Inicio(self, event=None, t=0):
         self.turno=t
         self.labels=grf.etiquetados(self.ventana, self.Seleccionar, self.j.dim )
         grf.graficar(self.j, self.labels, self.imagos)
-        
         
     def llenar(self):
         self.nuncio=tk.Label(self.ventana, width=8, height=2, borderwidth=1, relief="solid")
@@ -62,6 +48,10 @@ class vista:
             if(d):
                 return d==b
         return d
+    
+    def funcFicha(self, dup):
+        c=self.obtenerContNum(dup)
+        return self.j.fichero[c[1]].Movimiento
         
     #Devuelve verdadero si y solo si las dos duplas son coordenadas de casillas con fichas de distinto color o si hay una ficha y una direccion invalida
     def Discriminante(self, dup1, dup2):
@@ -90,10 +80,14 @@ class vista:
                 j.unbind("<Button-1>")
         grf.fin(st)
     
+    def GenerarJuego(self):
+        d=mat.Extraer(self.labels, self.imagos)
+        return juego(self.j.fichero, d, *self.j.dim)
 
     def Selegir(self, u:tuple):
         self.seleccion=u
-        self.movimientos_graficados = mat.MovimientosPosibles(u, self.obtenerContNum)
+        f=self.obtenerContNum(u)[1]
+        self.movimientos_graficados = self.j.fichero[f].Movimiento(u, self.obtenerContNum)
         movimientos = self.movimientos_graficados
         grf.graficarMovimientosPosibles(self.labels, movimientos)
 
@@ -126,9 +120,6 @@ class vista:
             #Si aun no hay seleccion
             elif(l[0]==self.turno):
                 self.Selegir(self.ObtenerUbicación(event.widget))
-            
-
-                           
 
     def Seleccionar(self, event:tk.Event):
         #sel es None cuando se hace el primer clic y es una tupla cuando se hace el segundo
@@ -143,7 +134,8 @@ class vista:
                 print(l)
                 print("Inicio: ", end=" ")
                 print(self.seleccion)
-                self.movimientos_graficados = mat.MovimientosPosibles(self.seleccion, self.obtenerContNum)
+                f=self.funcFicha(self.seleccion )
+                self.movimientos_graficados = f(self.seleccion, self.obtenerContNum)
                 movimientos = self.movimientos_graficados
                 grf.graficarMovimientosPosibles(self.labels, movimientos)
 

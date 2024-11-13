@@ -41,8 +41,8 @@ def grecolista(d):
     for i in range(d):
         lisN.append((0, i) )
         lisB.append((7,i))
-    lisB={1:lisB}
-    lisN={1:lisN}
+    lisB={0:lisB}
+    lisN={0:lisN}
     return [lisN, lisB]
 
 @staticmethod
@@ -117,12 +117,12 @@ def MovimientosRectos(d, inicio, func):
     return movs
 
 @staticmethod
-def MovimientosPosibles(inicio, func, d=None):
-    if(not d):
+def MovimientosPosibles(inicio, funcprueba, d=None, funcdireccion=MovimientosRectos):
+    if(d is None):
         d=direccionales[0]+direccionales[1]
     movimientosPosibles = []
     for direccion in d:
-        movimientosPosibles.extend(MovimientosRectos(direccion, inicio, func))
+        movimientosPosibles.extend(funcdireccion(direccion, inicio, funcprueba))
     return movimientosPosibles
 
 @staticmethod
