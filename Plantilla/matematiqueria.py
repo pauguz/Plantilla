@@ -101,29 +101,35 @@ def Extraer(labels:list, m):
                 labels[t[0]][t[1]]=(i,j)
     return struct
 
+#Los siguientes 3 metodos determinan el movimiento hacia una casilla, hacia una linea o hacia un conjunto de lineas rectas respectivamente
+@staticmethod
+def MovimientoUnico(d, inicio, func):
+        fin = SumaDupla(inicio, d)
+        # Verificar si se puede mover al nuevo fin
+        puedoAgregar = not func(fin)
+        if puedoAgregar:
+            return [fin]  
+
 @staticmethod
 def MovimientosRectos(d, inicio, func):
     movs=[]
     puedoAgregar = True
-    i = 1  # Para ir avanzando en la dirección
     while puedoAgregar:
-            # Calcular el nuevo fin sumando la dirección multiplicada por la iteración
-        fin = SumaDupla(inicio, MultDupla(d, i))
-            # Verificar si se puede mover al nuevo fin
-        puedoAgregar = not func(fin)
+        fin=MovimientoUnico(d, inicio, func)
+        puedoAgregar=bool(fin)
         if puedoAgregar:
-            movs.append(fin)  # Agregar el movimiento posible
-        i += 1  # Aumentar la distancia en esa dirección
+            movs.extend(fin)
+            inicio=fin[0]
     return movs
 
 @staticmethod
 def MovimientosPosibles(inicio, funcprueba, d=None, funcdireccion=MovimientosRectos):
     if(d is None):
         d=direccionales[0]+direccionales[1]
-    movimientosPosibles = []
+    movs = []
     for direccion in d:
-        movimientosPosibles.extend(funcdireccion(direccion, inicio, funcprueba))
-    return movimientosPosibles
+        movs.extend(funcdireccion(direccion, inicio, funcprueba))
+    return movs
 
 @staticmethod
 def Dimendor(d):

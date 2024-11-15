@@ -11,11 +11,11 @@ class vista:
     movimientos_graficados = []    
     #pantalla=tk.Frame()
 
-    def __init__(self, jue:juego, imgs):
+    def __init__(self, jue:juego, imgs, nombre='Mi ventana'):
         self.ventana = tk.Toplevel()
         self.j = jue
         self.imagos= [{clave: Image.open(ruta) for clave, ruta in dic.items()} for dic in imgs]
-        grf.ventor(self.ventana)
+        grf.ventor(self.ventana, txt=nombre)
         self.n=self.j.coors.__len__
         self.Inicio()
         self.llenar()
@@ -171,7 +171,7 @@ class vista:
         if mat.Comprobar(pos, eje, self.Discriminante, p, n):
             l=self.obtenerContNum(pos)
             if l==[1, 0]:
-                self.j.Terminar(self.labels, 'NEGRAS')
+                self.Terminar('NEGRAS')
             self.labels[pos[0]][pos[1]]=grf.etiquetado(pos[0], pos[1], self.ventana, self.Seleccionar)
             return True
             

@@ -16,8 +16,8 @@ def pruebavikinga(d=11):
     #Disposicion
     dispin=mat.vikilista(d)
     j=juego(coors=dispin,fichas=[rey, soldado], v=d)
-    imgs=[ {1:'vikingonegro.png'} , {0:'reg.png', 1:'vikingoblanco.png'} ]
-    v=vista(j, imgs=imgs)
+    imgs=[  {1:'vikingonegro.png'}, {0:'reg.png', 1:'vikingoblanco.png'}  ]
+    v=vista(j, imgs, 'Hnefatafl')
     v.ventana.mainloop()
 
 def pruebainca():
@@ -33,18 +33,15 @@ def pruebainca():
 
 def pruebagreca(d=8):
     dir=[(1,1),(-1,-1),(-1,1),(1,-1)]
+    dr=[(2,2),(-2,-2),(-2,2),(2,-2)]
     m=log.expansion(dir)
     hoplita=ficha(m)
     dispin=mat.grecolista(d)
     j=juego(coors=dispin, fichas=[hoplita], v=8, h=d )
-    imgs=[ {0:'zorrovacio.png'} , {0:'vikingoblanco.png'} ]
-    v=vista(j, imgs=imgs)
+    imgs=[ {0:'vikingonegro.png'} , {0:'vikingoblanco.png'} ]
+    v=vista(j, imgs=imgs, nombre='Petteia')
     v.ventana.mainloop()
 
-def generador():
-    dir=[(1,1),(-1,-1),(-1,1),(1,-1)]
-    m=log.expansion(d=dir)
-    print(m)
-    del m
 
-pruebavikinga()
+
+pruebagreca(12)
