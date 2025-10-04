@@ -25,17 +25,17 @@ def vikilista(dim:int):
         k=i*dim
         lisN.extend(coordenarEnlistado(dim, i, medium*2-i, k, medium*2-k))
     lisN.extend(coordenarEnlistado(dim, dim+media, 2*medium-media*3-1, (media)*dim+1, (media+1)*dim-2) )
-    lisN={1:lisN}
+    lisN={0:lisN}
     #Llenar con Fichas blancas  
     for i in range(-2,3):
         j=2-abs(i)
         for k in range (medium+i*dim-j,medium+i*dim+j+1):
             lisB.append(coordenar(k, dim))
     r=lisB.pop(6)
-    lisB={1:lisB, 0:[r]}
+    lisB={0:lisB, 1:[r]}
     return [lisN, lisB]
 
-def grecolista(d):
+def grecolista(d, l=False):
     lisB=[]
     lisN=[]
     for i in range(d):
@@ -43,6 +43,9 @@ def grecolista(d):
         lisB.append((7,i))
     lisB={0:lisB}
     lisN={0:lisN}
+    if l:
+        lisB.update({1:[(6, 1)]})
+        lisN.update({1:[(1, d-1)]})
     return [lisN, lisB]
 
 @staticmethod
@@ -101,17 +104,20 @@ def Extraer(labels:list, m):
                 labels[t[0]][t[1]]=(i,j)
     return struct
 
-#Los siguientes 3 metodos determinan el movimiento hacia una casilla, hacia una linea o hacia un conjunto de lineas rectas respectivamente
+#Los siguientes 4 metodos determinan el movimiento hacia una casilla, hacia una linea o hacia un conjunto de lineas rectas respectivamente
 @staticmethod
 def MovimientoUnico(d, inicio, func):
         fin = SumaDupla(inicio, d)
         # Verificar si se puede mover al nuevo fin
         puedoAgregar = not func(fin)
         if puedoAgregar:
-            return [fin]  
+            return [fin] 
+        return []
 
 @staticmethod
-def MovimientosRectos(d, inicio, func):
+def MovimientosRectos(d, inicio, func, r=None):
+    if r:
+        return MovimientosRectosRango(d, inicio, func, r)
     movs=[]
     puedoAgregar = True
     while puedoAgregar:
@@ -122,13 +128,24 @@ def MovimientosRectos(d, inicio, func):
             inicio=fin[0]
     return movs
 
+def MovimientosRectosRango(d, inicio, func, r:int):
+    movs=[]
+    puedoAgregar = True
+    while puedoAgregar and len(movs) <r:
+        fin=MovimientoUnico(d, inicio, func)
+        puedoAgregar=bool(fin)
+        if puedoAgregar:
+            movs.extend(fin)
+            inicio=fin[0]
+    return movs  
+
 @staticmethod
-def MovimientosPosibles(inicio, funcprueba, d=None, funcdireccion=MovimientosRectos):
+def MovimientosPosibles(inicio, funcprueba, d=None, funcdireccion=MovimientosRectos, r=None):
     if(d is None):
         d=direccionales[0]+direccionales[1]
     movs = []
     for direccion in d:
-        movs.extend(funcdireccion(direccion, inicio, funcprueba))
+        movs.extend(funcdireccion(direccion, inicio, funcprueba, r))
     return movs
 
 @staticmethod

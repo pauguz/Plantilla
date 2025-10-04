@@ -9,7 +9,6 @@ letras=list(['a','b','c','d','e','f','g','h','i','j','k'])
 class vista:
     seleccion=None  
     movimientos_graficados = []    
-    #pantalla=tk.Frame()
 
     def __init__(self, jue:juego, imgs, nombre='Mi ventana'):
         self.ventana = tk.Toplevel()
@@ -164,13 +163,13 @@ class vista:
     def blanquear(self, lis, destino):
         #Codigo por si gana el blanco
         comp=[self.j.dim[0]-1, 0]
-        if(lis==[1, 0] and destino[0] in comp and destino[1] in comp):
+        if(lis==[1, 1] and destino[0] in comp and destino[1] in comp):
             self.Terminar('BLANCAS')
 
     def Prueba(self,pos, eje, p=False, n=False):
         if mat.Comprobar(pos, eje, self.Discriminante, p, n):
             l=self.obtenerContNum(pos)
-            if l==[1, 0]:
+            if l==[1, 1]:
                 self.Terminar('NEGRAS')
             self.labels[pos[0]][pos[1]]=grf.etiquetado(pos[0], pos[1], self.ventana, self.Seleccionar)
             return True

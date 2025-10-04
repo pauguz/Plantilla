@@ -15,11 +15,8 @@ def etiquetados(v, func, d:tuple):
 
 @staticmethod
 def ventor(v, txt='Mi ventana'):
- # Configurar el título de la ventana
     v.title(txt)
-# Configurar las dimensiones de la ventana
     v.geometry("800x600")
-# Configurar el tamaño mínimo y máximo de la ventana para evitar deformación
     v.minsize(800, 600)
     v.maxsize(1200, 900) 
     v.resizable(True, True)

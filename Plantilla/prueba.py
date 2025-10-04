@@ -12,11 +12,11 @@ import logiqueria as log
 def pruebavikinga(d=11):
 #Creando fichas
     soldado=ficha(mat.MovimientosPosibles)
-    rey=ficha(mat.MovimientosPosibles)
+    rey=ficha(log.expansion(None, ra=3))
     #Disposicion
     dispin=mat.vikilista(d)
-    j=juego(coors=dispin,fichas=[rey, soldado], v=d)
-    imgs=[  {1:'vikingonegro.png'}, {0:'reg.png', 1:'vikingoblanco.png'}  ]
+    j=juego(coors=dispin,fichas=[soldado, rey], v=d)
+    imgs=[  {0:'vikingonegro.png'}, {1:'reg.png', 0:'vikingoblanco.png'}  ]
     v=vista(j, imgs, 'Hnefatafl')
     v.ventana.mainloop()
 
@@ -32,9 +32,9 @@ def pruebainca():
     v.mainloop()
 
 def pruebagreca(d=8):
-    dir=[(1,1),(-1,-1),(-1,1),(1,-1)]
-    dr=[(2,2),(-2,-2),(-2,2),(2,-2)]
-    m=log.expansion(dir)
+    #dir=[(1,1),(-1,-1),(-1,1),(1,-1)]
+    dir=[(2,2),(-2,-2),(-2,2),(2,-2)]
+    m=log.expansion(dir,  mat.MovimientosRectos)
     hoplita=ficha(m)
     dispin=mat.grecolista(d)
     j=juego(coors=dispin, fichas=[hoplita], v=8, h=d )
@@ -42,6 +42,17 @@ def pruebagreca(d=8):
     v=vista(j, imgs=imgs, nombre='Petteia')
     v.ventana.mainloop()
 
+def pruebalatina(d=8):
+    dir=[(1,1),(-1,-1),(-1,1),(1,-1)]
+    dr=[(2,2),(-2,-2),(-2,2),(2,-2)]
+    m=log.expansion(dir,  mat.MovimientosRectos)
+    hoplita=ficha(m)
+    duque=ficha(m)
+    dispin=mat.grecolista(d, True)
+    j=juego(coors=dispin, fichas=[hoplita, duque], v=8, h=d )
+    imgs=[ {0:'vikingonegro.png', 1:'reg.png'} , {0:'vikingoblanco.png', 1:'reg.png'} ]
+    v=vista(j, imgs=imgs, nombre='Latrunculi')
+    v.ventana.mainloop()
 
 
-pruebagreca(12)
+pruebagreca()
